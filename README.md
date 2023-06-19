@@ -68,7 +68,7 @@ GET /artists/:id
 | ------------- | ------------- |
 | id  | The artist’s ID. Required. |
 
-## Search artworks
+## Search artists
 ```
 GET /artists/search
 ```
