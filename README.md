@@ -15,7 +15,7 @@ In order to run the server you need to declare these environment variables:
 > Currently was tested in pair with PostgreSQL Database and drivers
 
 > **Warning** <br/>
-> Code contains extension function for PostgreSQL specific ***ILIKE*** operator for case insensitive search.<br/>
+> Code contains extension function for PostgreSQL specific ***ILIKE*** operator for case-insensitive search.<br/>
 > This likely won't be compatible with other databases but it is planned to be fixed in future versions!
 
 # Routes
