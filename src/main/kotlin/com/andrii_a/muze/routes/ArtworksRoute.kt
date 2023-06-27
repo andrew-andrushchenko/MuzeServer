@@ -2,10 +2,7 @@ package com.andrii_a.muze.routes
 
 import com.andrii_a.muze.domain.model.ArtworkResponse
 import com.andrii_a.muze.domain.repository.ArtworksRepository
-import com.andrii_a.muze.util.DEFAULT_INITIAL_PAGE
-import com.andrii_a.muze.util.DEFAULT_PAGE_SIZE
-import com.andrii_a.muze.util.Environment
-import com.andrii_a.muze.util.save
+import com.andrii_a.muze.util.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -100,6 +97,10 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                         }
 
                         is PartData.FileItem -> {
+                            if (!partData.isImage) {
+                                throw UploadedFileNotAnImageException()
+                            }
+
                             fileName = partData.save(Environment.artworksDirectoryUrl)
                         }
 
@@ -118,10 +119,28 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     artistId = artistId
                 )
 
-                call.respond(HttpStatusCode.OK, imageUrl)
+                call.respond(
+                    message = imageUrl,
+                    status = HttpStatusCode.OK
+                )
+
             } catch (ex: Exception) {
-                File("/$fileName").delete()
-                call.respond(HttpStatusCode.InternalServerError, "Unable to receive data. Try again later")
+                when (ex) {
+                    is UploadedFileNotAnImageException -> {
+                        call.respond(
+                            message = ex.message.orEmpty(),
+                            status = HttpStatusCode.BadRequest
+                        )
+                    }
+
+                    else -> {
+                        File("/$fileName").delete()
+                        call.respond(
+                            message = "Unable to receive data. Try again later",
+                            status = HttpStatusCode.InternalServerError
+                        )
+                    }
+                }
             }
         }
 
