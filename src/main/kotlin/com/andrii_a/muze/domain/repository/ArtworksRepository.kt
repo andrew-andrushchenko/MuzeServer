@@ -1,6 +1,7 @@
 package com.andrii_a.muze.domain.repository
 
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 
 interface ArtworksRepository {
 
@@ -27,7 +28,7 @@ interface ArtworksRepository {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean
@@ -37,7 +38,7 @@ interface ArtworksRepository {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean

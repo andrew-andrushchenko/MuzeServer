@@ -1,6 +1,7 @@
 package com.andrii_a.muze.domain.dao
 
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import java.time.LocalDate
 
 interface ArtistsDao {
@@ -15,7 +16,7 @@ interface ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean
 
@@ -24,7 +25,7 @@ interface ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean
 

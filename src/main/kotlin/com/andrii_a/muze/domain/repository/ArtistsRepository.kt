@@ -1,6 +1,7 @@
 package com.andrii_a.muze.domain.repository
 
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 
 interface ArtistsRepository {
 
@@ -14,7 +15,7 @@ interface ArtistsRepository {
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean
 
@@ -23,7 +24,7 @@ interface ArtistsRepository {
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean
 

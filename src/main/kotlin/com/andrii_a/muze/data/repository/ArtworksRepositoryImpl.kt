@@ -2,6 +2,7 @@ package com.andrii_a.muze.data.repository
 
 import com.andrii_a.muze.domain.dao.ArtworksDao
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtworksRepository
 
 class ArtworksRepositoryImpl(private val dao: ArtworksDao) : ArtworksRepository {
@@ -25,20 +26,20 @@ class ArtworksRepositoryImpl(private val dao: ArtworksDao) : ArtworksRepository 
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int,
-    ): Boolean = dao.insert(name, year, location, imageUrl, description, artistId)
+    ): Boolean = dao.insert(name, year, location, image, description, artistId)
 
     override suspend fun updateArtwork(
         id: Int,
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
-    ): Boolean = dao.update(id, name, year, location, imageUrl, description, artistId)
+    ): Boolean = dao.update(id, name, year, location, image, description, artistId)
 
     override suspend fun deleteAll(): Boolean = dao.deleteAll()
 

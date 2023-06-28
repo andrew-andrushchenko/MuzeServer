@@ -8,7 +8,7 @@ data class ArtworkResponse(
     val name: String,
     val year: String?,
     val location: String,
-    val imageUrl: String,
+    val image: ImageResponse,
     val description: String?,
     val artist: ArtistResponse
 )

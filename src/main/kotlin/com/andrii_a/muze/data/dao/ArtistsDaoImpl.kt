@@ -4,6 +4,7 @@ import com.andrii_a.muze.data.dbQuery
 import com.andrii_a.muze.data.tables.Artists
 import com.andrii_a.muze.domain.dao.ArtistsDao
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -16,7 +17,11 @@ class ArtistsDaoImpl : ArtistsDao {
         name = row[Artists.name],
         bornDateString = row[Artists.born].toString(),
         diedDateString = row[Artists.died].toString(),
-        portraitImageUrl = row[Artists.portraitImageUrl],
+        portraitImage = ImageResponse(
+            width = row[Artists.portraitImageWidth],
+            height = row[Artists.portraitImageHeight],
+            url = row[Artists.portraitImageUrl]
+        ),
         bio = row[Artists.bio]
     )
 
@@ -54,14 +59,16 @@ class ArtistsDaoImpl : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean = dbQuery {
         Artists.insert {
             it[Artists.name] = name
             it[born] = bornDate
             it[died] = diedDate
-            it[Artists.portraitImageUrl] = portraitImageUrl
+            it[portraitImageWidth] = portraitImage.width
+            it[portraitImageHeight] = portraitImage.height
+            it[portraitImageUrl] = portraitImage.url
             it[Artists.bio] = bio.orEmpty()
         }.insertedCount > 0
     }
@@ -71,14 +78,16 @@ class ArtistsDaoImpl : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean = dbQuery {
         Artists.update({ Artists.id eq id }) {
             it[this.name] = name
             it[born] = bornDate
             it[died] = diedDate
-            it[this.portraitImageUrl] = portraitImageUrl
+            it[portraitImageWidth] = portraitImage.width
+            it[portraitImageHeight] = portraitImage.height
+            it[portraitImageUrl] = portraitImage.url
             it[this.bio] = bio.orEmpty()
         } > 0
     }

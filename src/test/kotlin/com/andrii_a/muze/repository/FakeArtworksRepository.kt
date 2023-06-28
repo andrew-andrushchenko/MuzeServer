@@ -2,6 +2,7 @@ package com.andrii_a.muze.repository
 
 import com.andrii_a.muze.domain.dao.ArtworksDao
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtworksRepository
 
 class FakeArtworksRepository(private val dao: ArtworksDao) : ArtworksRepository {
@@ -26,7 +27,7 @@ class FakeArtworksRepository(private val dao: ArtworksDao) : ArtworksRepository 
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean {
@@ -38,7 +39,7 @@ class FakeArtworksRepository(private val dao: ArtworksDao) : ArtworksRepository 
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean {

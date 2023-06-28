@@ -8,5 +8,7 @@ object Artists : IntIdTable() {
     val born = date("born").nullable()
     val died = date("died").nullable()
     val portraitImageUrl = text("portrait_image_url")
+    val portraitImageWidth = integer("portrait_image_width")
+    val portraitImageHeight = integer("portrait_image_height")
     val bio = text("bio")
 }

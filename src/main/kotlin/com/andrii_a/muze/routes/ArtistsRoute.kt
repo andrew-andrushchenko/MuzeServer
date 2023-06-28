@@ -1,6 +1,7 @@
 package com.andrii_a.muze.routes
 
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.*
 import io.ktor.http.*
@@ -60,8 +61,8 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
 
         post("add") {
             val multipart = call.receiveMultipart()
-            var fileName: String? = null
 
+            var portraitImageUrl = ""
             var name = ""
             var bornDateString = ""
             var diedDateString = ""
@@ -80,24 +81,24 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                         }
 
                         is PartData.FileItem -> {
-                            if (!partData.isImage) {
-                                throw UploadedFileNotAnImageException()
-                            }
-
-                            fileName = partData.save(Environment.artistsPortraitsDirectoryUrl)
+                            portraitImageUrl = partData.trySave(Environment.artistsPortraitsDirectoryUrl)
                         }
 
                         else -> Unit
                     }
                 }
 
-                val portraitImageUrl = "${Environment.baseServerUrl}${Environment.artistsPortraitsDirectoryUrl}$fileName"
+                val (width, height) = File(portraitImageUrl).asImage().resolution
 
                 repository.addArtist(
                     name = name,
                     bornDateString = bornDateString,
                     diedDateString = diedDateString,
-                    portraitImageUrl = portraitImageUrl,
+                    portraitImage = ImageResponse(
+                        width = width,
+                        height = height,
+                        url = "${Environment.baseServerUrl}$portraitImageUrl"
+                    ),
                     bio = bio
                 )
 
@@ -116,7 +117,8 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                     }
 
                     else -> {
-                        File("/$fileName").delete()
+                        File(portraitImageUrl).delete()
+
                         call.respond(
                             message = "Unable to receive data. Try again later",
                             status = HttpStatusCode.InternalServerError

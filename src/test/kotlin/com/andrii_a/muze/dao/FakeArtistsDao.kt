@@ -2,6 +2,7 @@ package com.andrii_a.muze.dao
 
 import com.andrii_a.muze.domain.dao.ArtistsDao
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import java.time.LocalDate
 
 class FakeArtistsDao : ArtistsDao {
@@ -22,7 +23,7 @@ class FakeArtistsDao : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")
@@ -33,7 +34,7 @@ class FakeArtistsDao : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")

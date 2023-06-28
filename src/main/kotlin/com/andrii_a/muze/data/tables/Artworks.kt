@@ -8,5 +8,7 @@ object Artworks : IntIdTable() {
     val location = text("location")
     val description = text("description")
     val imageUrl = text("image_url")
+    val imageWidth = integer("image_width")
+    val imageHeight = integer("image_height")
     val artistId = reference("artist_id", Artists)
 }

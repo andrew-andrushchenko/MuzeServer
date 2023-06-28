@@ -6,6 +6,7 @@ import com.andrii_a.muze.data.tables.Artworks
 import com.andrii_a.muze.domain.dao.ArtworksDao
 import com.andrii_a.muze.domain.model.ArtistResponse
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -17,14 +18,22 @@ class ArtworksDaoImpl : ArtworksDao {
         name = row[Artworks.name],
         year = row[Artworks.year],
         location = row[Artworks.location],
-        imageUrl = row[Artworks.imageUrl],
+        image = ImageResponse(
+            width = row[Artworks.imageWidth],
+            height = row[Artworks.imageHeight],
+            url = row[Artworks.imageUrl]
+        ),
         description = row[Artworks.description],
         artist = ArtistResponse(
             id = row[Artists.id].value,
             name = row[Artists.name],
             bornDateString = row[Artists.born].toString(),
             diedDateString = row[Artists.died].toString(),
-            portraitImageUrl = row[Artists.portraitImageUrl],
+            portraitImage = ImageResponse(
+                width = row[Artists.portraitImageWidth],
+                height = row[Artists.portraitImageHeight],
+                url = row[Artists.portraitImageUrl]
+            ),
             bio = row[Artists.bio]
         )
     )
@@ -79,7 +88,7 @@ class ArtworksDaoImpl : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean = dbQuery {
@@ -87,7 +96,9 @@ class ArtworksDaoImpl : ArtworksDao {
             it[Artworks.name] = name
             it[Artworks.year] = year
             it[Artworks.location] = location
-            it[Artworks.imageUrl] = imageUrl
+            it[imageWidth] = image.width
+            it[imageHeight] = image.height
+            it[imageUrl] = image.url
             it[Artworks.description] = description
             it[Artworks.artistId] = artistId
         }.insertedCount > 0
@@ -98,17 +109,19 @@ class ArtworksDaoImpl : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean = dbQuery {
         Artworks.update({ Artworks.id eq id }) {
-            it[Artworks.name] = name
-            it[Artworks.year] = year
-            it[Artworks.location] = location
-            it[Artworks.imageUrl] = imageUrl
-            it[Artworks.description] = description
-            it[Artworks.artistId] = artistId
+            it[this.name] = name
+            it[this.year] = year
+            it[this.location] = location
+            it[imageWidth] = image.width
+            it[imageHeight] = image.height
+            it[imageUrl] = image.url
+            it[this.description] = description
+            it[this.artistId] = artistId
         } > 0
     }
 

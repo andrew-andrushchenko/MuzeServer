@@ -2,6 +2,7 @@ package com.andrii_a.muze.repository
 
 import com.andrii_a.muze.domain.dao.ArtistsDao
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.DateValidator
 
@@ -26,7 +27,7 @@ class FakeArtistsRepository(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")
@@ -37,7 +38,7 @@ class FakeArtistsRepository(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")

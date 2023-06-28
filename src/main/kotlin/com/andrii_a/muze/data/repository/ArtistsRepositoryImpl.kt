@@ -2,6 +2,7 @@ package com.andrii_a.muze.data.repository
 
 import com.andrii_a.muze.domain.dao.ArtistsDao
 import com.andrii_a.muze.domain.model.ArtistResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.DateValidator
 import com.andrii_a.muze.util.toLocalDate
@@ -12,16 +13,7 @@ class ArtistsRepositoryImpl(
 ) : ArtistsRepository {
 
     override suspend fun getAllArtists(page: Int, perPage: Int): List<ArtistResponse> =
-        dao.getArtists(page, perPage).map {
-            ArtistResponse(
-                id = it.id,
-                name = it.name,
-                bornDateString = it.bornDateString,
-                diedDateString = it.diedDateString,
-                portraitImageUrl = it.portraitImageUrl,
-                bio = it.bio
-            )
-        }
+        dao.getArtists(page, perPage)
 
     override suspend fun getArtist(id: Int): ArtistResponse? {
         val artist = dao.getArtist(id)
@@ -32,7 +24,7 @@ class ArtistsRepositoryImpl(
                 name = it.name,
                 bornDateString = it.bornDateString,
                 diedDateString = it.diedDateString,
-                portraitImageUrl = it.portraitImageUrl,
+                portraitImage = it.portraitImage,
                 bio = it.bio
             )
         }
@@ -48,7 +40,7 @@ class ArtistsRepositoryImpl(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         val isBirthDateValid = dateValidator.isValidDate(bornDateString)
@@ -59,7 +51,7 @@ class ArtistsRepositoryImpl(
                 name = name,
                 bornDate = bornDateString.toLocalDate(),
                 diedDate = diedDateString.toLocalDate(),
-                portraitImageUrl = portraitImageUrl,
+                portraitImage = portraitImage,
                 bio = bio
             )
         } else {
@@ -72,7 +64,7 @@ class ArtistsRepositoryImpl(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImageUrl: String,
+        portraitImage: ImageResponse,
         bio: String?
     ): Boolean {
         val isBirthDateValid = dateValidator.isValidDate(bornDateString)
@@ -84,7 +76,7 @@ class ArtistsRepositoryImpl(
                 name = name,
                 bornDate = bornDateString.toLocalDate(),
                 diedDate = diedDateString.toLocalDate(),
-                portraitImageUrl = portraitImageUrl,
+                portraitImage = portraitImage,
                 bio = bio
             )
         } else {

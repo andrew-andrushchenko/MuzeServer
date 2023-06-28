@@ -1,6 +1,7 @@
 package com.andrii_a.muze.domain.dao
 
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 
 interface ArtworksDao {
 
@@ -16,7 +17,7 @@ interface ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean
@@ -26,7 +27,7 @@ interface ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean

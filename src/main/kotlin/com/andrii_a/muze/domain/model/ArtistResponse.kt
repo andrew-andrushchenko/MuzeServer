@@ -8,6 +8,6 @@ data class ArtistResponse(
     val name: String,
     val bornDateString: String?,
     val diedDateString: String?,
-    val portraitImageUrl: String,
+    val portraitImage: ImageResponse,
     val bio: String
 )

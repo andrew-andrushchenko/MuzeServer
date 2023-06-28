@@ -2,6 +2,7 @@ package com.andrii_a.muze.dao
 
 import com.andrii_a.muze.domain.dao.ArtworksDao
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 
 class FakeArtworksDao : ArtworksDao {
 
@@ -25,7 +26,7 @@ class FakeArtworksDao : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean {
@@ -37,7 +38,7 @@ class FakeArtworksDao : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        imageUrl: String,
+        image: ImageResponse,
         description: String,
         artistId: Int
     ): Boolean {

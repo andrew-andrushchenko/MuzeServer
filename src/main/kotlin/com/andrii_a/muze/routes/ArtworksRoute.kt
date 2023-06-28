@@ -1,6 +1,7 @@
 package com.andrii_a.muze.routes
 
 import com.andrii_a.muze.domain.model.ArtworkResponse
+import com.andrii_a.muze.domain.model.ImageResponse
 import com.andrii_a.muze.domain.repository.ArtworksRepository
 import com.andrii_a.muze.util.*
 import io.ktor.http.*
@@ -75,8 +76,8 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
 
         post("add") {
             val multipart = call.receiveMultipart()
-            var fileName: String? = null
 
+            var imageUrl = ""
             var name = ""
             var year = ""
             var location = ""
@@ -97,24 +98,24 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                         }
 
                         is PartData.FileItem -> {
-                            if (!partData.isImage) {
-                                throw UploadedFileNotAnImageException()
-                            }
-
-                            fileName = partData.save(Environment.artworksDirectoryUrl)
+                            imageUrl = partData.trySave(Environment.artworksDirectoryUrl)
                         }
 
                         else -> Unit
                     }
                 }
 
-                val imageUrl = "${Environment.baseServerUrl}${Environment.artworksDirectoryUrl}$fileName"
+                val (width, height) = File(imageUrl).asImage().resolution
 
                 repository.addArtwork(
                     name = name,
                     year = year,
                     location = location,
-                    imageUrl = imageUrl,
+                    image = ImageResponse(
+                        width = width,
+                        height = height,
+                        url = "${Environment.baseServerUrl}$imageUrl"
+                    ),
                     description = description,
                     artistId = artistId
                 )
@@ -134,7 +135,8 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     }
 
                     else -> {
-                        File("/$fileName").delete()
+                        File(imageUrl).delete()
+
                         call.respond(
                             message = "Unable to receive data. Try again later",
                             status = HttpStatusCode.InternalServerError
