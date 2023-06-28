@@ -4,32 +4,32 @@ import com.andrii_a.muze.data.dbQuery
 import com.andrii_a.muze.data.tables.Artists
 import com.andrii_a.muze.data.tables.Artworks
 import com.andrii_a.muze.domain.dao.ArtworksDao
-import com.andrii_a.muze.domain.model.ArtistResponse
-import com.andrii_a.muze.domain.model.ArtworkResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artist
+import com.andrii_a.muze.domain.model.Artwork
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class ArtworksDaoImpl : ArtworksDao {
 
-    private fun resultRowToPaintingResponse(row: ResultRow) = ArtworkResponse(
+    private fun resultRowToPaintingResponse(row: ResultRow) = Artwork(
         id = row[Artworks.id].value,
         name = row[Artworks.name],
         year = row[Artworks.year],
         location = row[Artworks.location],
-        image = ImageResponse(
+        image = Image(
             width = row[Artworks.imageWidth],
             height = row[Artworks.imageHeight],
             url = row[Artworks.imageUrl]
         ),
         description = row[Artworks.description],
-        artist = ArtistResponse(
+        artist = Artist(
             id = row[Artists.id].value,
             name = row[Artists.name],
             bornDateString = row[Artists.born].toString(),
             diedDateString = row[Artists.died].toString(),
-            portraitImage = ImageResponse(
+            portraitImage = Image(
                 width = row[Artists.portraitImageWidth],
                 height = row[Artists.portraitImageHeight],
                 url = row[Artists.portraitImageUrl]
@@ -41,7 +41,7 @@ class ArtworksDaoImpl : ArtworksDao {
     override suspend fun getArtworks(
         page: Int,
         perPage: Int
-    ): List<ArtworkResponse> = dbQuery {
+    ): List<Artwork> = dbQuery {
         val offset = (page - 1) * perPage
         Artworks
             .leftJoin(Artists)
@@ -50,7 +50,7 @@ class ArtworksDaoImpl : ArtworksDao {
             .map(::resultRowToPaintingResponse)
     }
 
-    override suspend fun getArtwork(id: Int): ArtworkResponse? = dbQuery {
+    override suspend fun getArtwork(id: Int): Artwork? = dbQuery {
         Artworks
             .leftJoin(Artists)
             .select(Artworks.id eq id)
@@ -62,7 +62,7 @@ class ArtworksDaoImpl : ArtworksDao {
         artistId: Int,
         page: Int,
         perPage: Int
-    ): List<ArtworkResponse> = dbQuery {
+    ): List<Artwork> = dbQuery {
         val offset = (page - 1) * perPage
         Artworks
             .leftJoin(Artists)
@@ -75,7 +75,7 @@ class ArtworksDaoImpl : ArtworksDao {
         query: String,
         page: Int,
         perPage: Int
-    ): List<ArtworkResponse> = dbQuery {
+    ): List<Artwork> = dbQuery {
         val offset = (page - 1) * perPage
         Artworks
             .leftJoin(Artists)
@@ -88,7 +88,7 @@ class ArtworksDaoImpl : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        image: ImageResponse,
+        image: Image,
         description: String,
         artistId: Int
     ): Boolean = dbQuery {
@@ -109,7 +109,7 @@ class ArtworksDaoImpl : ArtworksDao {
         name: String,
         year: String?,
         location: String,
-        image: ImageResponse,
+        image: Image,
         description: String,
         artistId: Int
     ): Boolean = dbQuery {

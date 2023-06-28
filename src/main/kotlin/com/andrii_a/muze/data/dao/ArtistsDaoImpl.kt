@@ -3,8 +3,8 @@ package com.andrii_a.muze.data.dao
 import com.andrii_a.muze.data.dbQuery
 import com.andrii_a.muze.data.tables.Artists
 import com.andrii_a.muze.domain.dao.ArtistsDao
-import com.andrii_a.muze.domain.model.ArtistResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artist
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -12,12 +12,12 @@ import java.time.LocalDate
 
 class ArtistsDaoImpl : ArtistsDao {
 
-    private fun resultRowToArtist(row: ResultRow) = ArtistResponse(
+    private fun resultRowToArtist(row: ResultRow) = Artist(
         id = row[Artists.id].value,
         name = row[Artists.name],
         bornDateString = row[Artists.born].toString(),
         diedDateString = row[Artists.died].toString(),
-        portraitImage = ImageResponse(
+        portraitImage = Image(
             width = row[Artists.portraitImageWidth],
             height = row[Artists.portraitImageHeight],
             url = row[Artists.portraitImageUrl]
@@ -28,7 +28,7 @@ class ArtistsDaoImpl : ArtistsDao {
     override suspend fun getArtists(
         page: Int,
         perPage: Int
-    ): List<ArtistResponse> = dbQuery {
+    ): List<Artist> = dbQuery {
         val offset = (page - 1) * perPage
         Artists
             .selectAll()
@@ -36,7 +36,7 @@ class ArtistsDaoImpl : ArtistsDao {
             .map(::resultRowToArtist)
     }
 
-    override suspend fun getArtist(id: Int): ArtistResponse? = dbQuery {
+    override suspend fun getArtist(id: Int): Artist? = dbQuery {
         Artists
             .select(Artists.id eq id)
             .map(::resultRowToArtist)
@@ -47,7 +47,7 @@ class ArtistsDaoImpl : ArtistsDao {
         query: String,
         page: Int,
         perPage: Int
-    ): List<ArtistResponse> = dbQuery {
+    ): List<Artist> = dbQuery {
         val offset = (page - 1) * perPage
         Artists
             .select(Artists.name ilike "%$query%")
@@ -59,7 +59,7 @@ class ArtistsDaoImpl : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean = dbQuery {
         Artists.insert {
@@ -78,7 +78,7 @@ class ArtistsDaoImpl : ArtistsDao {
         name: String,
         bornDate: LocalDate?,
         diedDate: LocalDate?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean = dbQuery {
         Artists.update({ Artists.id eq id }) {

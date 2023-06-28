@@ -1,8 +1,8 @@
 package com.andrii_a.muze.data.repository
 
 import com.andrii_a.muze.domain.dao.ArtistsDao
-import com.andrii_a.muze.domain.model.ArtistResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artist
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.DateValidator
 import com.andrii_a.muze.util.toLocalDate
@@ -12,14 +12,14 @@ class ArtistsRepositoryImpl(
     private val dateValidator: DateValidator
 ) : ArtistsRepository {
 
-    override suspend fun getAllArtists(page: Int, perPage: Int): List<ArtistResponse> =
+    override suspend fun getAllArtists(page: Int, perPage: Int): List<Artist> =
         dao.getArtists(page, perPage)
 
-    override suspend fun getArtist(id: Int): ArtistResponse? {
+    override suspend fun getArtist(id: Int): Artist? {
         val artist = dao.getArtist(id)
 
         return artist?.let {
-            ArtistResponse(
+            Artist(
                 id = it.id,
                 name = it.name,
                 bornDateString = it.bornDateString,
@@ -34,13 +34,13 @@ class ArtistsRepositoryImpl(
         query: String,
         page: Int,
         perPage: Int
-    ): List<ArtistResponse> = dao.getArtistsByQuery(query, page, perPage)
+    ): List<Artist> = dao.getArtistsByQuery(query, page, perPage)
 
     override suspend fun addArtist(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean {
         val isBirthDateValid = dateValidator.isValidDate(bornDateString)
@@ -64,7 +64,7 @@ class ArtistsRepositoryImpl(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean {
         val isBirthDateValid = dateValidator.isValidDate(bornDateString)

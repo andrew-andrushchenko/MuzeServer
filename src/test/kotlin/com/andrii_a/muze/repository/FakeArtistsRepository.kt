@@ -1,8 +1,8 @@
 package com.andrii_a.muze.repository
 
 import com.andrii_a.muze.domain.dao.ArtistsDao
-import com.andrii_a.muze.domain.model.ArtistResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artist
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.DateValidator
 
@@ -11,15 +11,15 @@ class FakeArtistsRepository(
     private val dateValidator: DateValidator
 ) : ArtistsRepository {
 
-    override suspend fun getAllArtists(page: Int, perPage: Int): List<ArtistResponse> {
+    override suspend fun getAllArtists(page: Int, perPage: Int): List<Artist> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getArtist(id: Int): ArtistResponse? {
+    override suspend fun getArtist(id: Int): Artist? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchArtists(query: String, page: Int, perPage: Int): List<ArtistResponse> {
+    override suspend fun searchArtists(query: String, page: Int, perPage: Int): List<Artist> {
         TODO("Not yet implemented")
     }
 
@@ -27,7 +27,7 @@ class FakeArtistsRepository(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")
@@ -38,7 +38,7 @@ class FakeArtistsRepository(
         name: String,
         bornDateString: String?,
         diedDateString: String?,
-        portraitImage: ImageResponse,
+        portraitImage: Image,
         bio: String?
     ): Boolean {
         TODO("Not yet implemented")

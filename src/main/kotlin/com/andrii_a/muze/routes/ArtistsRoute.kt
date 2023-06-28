@@ -1,7 +1,7 @@
 package com.andrii_a.muze.routes
 
-import com.andrii_a.muze.domain.model.ArtistResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artist
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.domain.repository.ArtistsRepository
 import com.andrii_a.muze.util.*
 import io.ktor.http.*
@@ -53,7 +53,7 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                 )
             } else {
                 call.respond(
-                    message = emptyList<ArtistResponse>(),
+                    message = emptyList<Artist>(),
                     status = HttpStatusCode.OK
                 )
             }
@@ -94,7 +94,7 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                     name = name,
                     bornDateString = bornDateString,
                     diedDateString = diedDateString,
-                    portraitImage = ImageResponse(
+                    portraitImage = Image(
                         width = width,
                         height = height,
                         url = "${Environment.baseServerUrl}$portraitImageUrl"

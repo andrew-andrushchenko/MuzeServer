@@ -1,7 +1,7 @@
 package com.andrii_a.muze.routes
 
-import com.andrii_a.muze.domain.model.ArtworkResponse
-import com.andrii_a.muze.domain.model.ImageResponse
+import com.andrii_a.muze.domain.model.Artwork
+import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.domain.repository.ArtworksRepository
 import com.andrii_a.muze.util.*
 import io.ktor.http.*
@@ -68,7 +68,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                 )
             } else {
                 call.respond(
-                    message = emptyList<ArtworkResponse>(),
+                    message = emptyList<Artwork>(),
                     status = HttpStatusCode.OK
                 )
             }
@@ -111,7 +111,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     name = name,
                     year = year,
                     location = location,
-                    image = ImageResponse(
+                    image = Image(
                         width = width,
                         height = height,
                         url = "${Environment.baseServerUrl}$imageUrl"
