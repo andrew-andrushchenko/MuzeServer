@@ -98,14 +98,14 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                         }
 
                         is PartData.FileItem -> {
-                            uploadedImageFileName = partData.trySave(Environment.artworksDirectoryUrl)
+                            uploadedImageFileName = partData.trySave(Environment.artworksDir)
                         }
 
                         else -> Unit
                     }
                 }
 
-                val imageUrl = "${Environment.artworksDirectoryUrl}$uploadedImageFileName"
+                val imageUrl = "${Environment.artworksDir}$uploadedImageFileName"
                 val (width, height) = File(imageUrl).asImage().resolution
 
                 repository.addArtwork(
@@ -136,7 +136,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     }
 
                     else -> {
-                        val imageUrl = "${Environment.artworksDirectoryUrl}$uploadedImageFileName"
+                        val imageUrl = "${Environment.artworksDir}$uploadedImageFileName"
                         File(imageUrl).delete()
 
                         call.respond(
