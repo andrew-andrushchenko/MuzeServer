@@ -3,13 +3,13 @@ Simple REST Server API for Art gallery.
 
 # How to setup
 In order to run the server you need to declare these environment variables:
-| Variable  | Description |
-| ------------- | ------------- |
-| BASE_URL | Url for your server. Needed to properly store and retrieve images. |
-| DATABASE_URL | Url to your database. |
-| JDBC_DRIVER | Your JDBC driver. |
-| ARTWORKS_DIR | Path to a directory to store and retrieve artworks. |
-| ARTISTS_PORTRAITS_DIR | Path to a directory to store and retrieve artists portraits. |
+| Variable  | Description | Note |
+| ------------- | ------------- | ------------- |
+| BASE_URL | Your server's network URL. | -
+| DATABASE_URL | URL to your database. | - |
+| JDBC_DRIVER | Your JDBC driver. | - |
+| ARTWORKS_DIR | Path to a directory to store and retrieve artworks. | Optional; Default path: [workingDir]/data/artworks_dir/ |
+| ARTISTS_PORTRAITS_DIR | Path to a directory to store and retrieve artists portraits. | Optional; Default path: [workingDir]/data/artists_portraits/ |
 
 > **Note**  
 > Currently was tested in pair with PostgreSQL Database and drivers
