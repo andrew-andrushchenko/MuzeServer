@@ -5,6 +5,8 @@ import com.andrii_a.muze.data.tables.Artists
 import com.andrii_a.muze.domain.dao.ArtistsDao
 import com.andrii_a.muze.domain.model.Artist
 import com.andrii_a.muze.domain.model.Image
+import com.andrii_a.muze.util.ImageType
+import com.andrii_a.muze.util.constructUrlForImage
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -20,7 +22,10 @@ class ArtistsDaoImpl : ArtistsDao {
         portraitImage = Image(
             width = row[Artists.portraitImageWidth],
             height = row[Artists.portraitImageHeight],
-            url = row[Artists.portraitImageUrl]
+            url = constructUrlForImage(
+                filename = row[Artists.portraitImage],
+                imageType = ImageType.ARTIST_PORTRAIT
+            )
         ),
         bio = row[Artists.bio]
     )
@@ -68,7 +73,7 @@ class ArtistsDaoImpl : ArtistsDao {
             it[died] = diedDate
             it[portraitImageWidth] = portraitImage.width
             it[portraitImageHeight] = portraitImage.height
-            it[portraitImageUrl] = portraitImage.url
+            it[this.portraitImage] = portraitImage.url
             it[Artists.bio] = bio.orEmpty()
         }.insertedCount > 0
     }
@@ -87,7 +92,7 @@ class ArtistsDaoImpl : ArtistsDao {
             it[died] = diedDate
             it[portraitImageWidth] = portraitImage.width
             it[portraitImageHeight] = portraitImage.height
-            it[portraitImageUrl] = portraitImage.url
+            it[this.portraitImage] = portraitImage.url
             it[this.bio] = bio.orEmpty()
         } > 0
     }

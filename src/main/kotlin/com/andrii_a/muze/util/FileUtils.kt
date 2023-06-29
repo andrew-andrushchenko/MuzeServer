@@ -21,10 +21,10 @@ fun PartData.FileItem.trySave(destinationPath: String): String {
     val folder = File(destinationPath)
     folder.mkdir()
 
-    val savedPath = "$destinationPath$fileName"
-    File(savedPath).writeBytes(fileBytes)
+    val pathToSave = "$destinationPath$fileName"
+    File(pathToSave).writeBytes(fileBytes)
 
-    return savedPath
+    return fileName
 }
 
 fun File.asImage(): BufferedImage = ImageIO.read(this)

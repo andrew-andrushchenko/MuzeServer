@@ -77,7 +77,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
         post("add") {
             val multipart = call.receiveMultipart()
 
-            var imageUrl = ""
+            var uploadedImageFileName = ""
             var name = ""
             var year = ""
             var location = ""
@@ -98,13 +98,14 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                         }
 
                         is PartData.FileItem -> {
-                            imageUrl = partData.trySave(Environment.artworksDirectoryUrl)
+                            uploadedImageFileName = partData.trySave(Environment.artworksDirectoryUrl)
                         }
 
                         else -> Unit
                     }
                 }
 
+                val imageUrl = "${Environment.artworksDirectoryUrl}$uploadedImageFileName"
                 val (width, height) = File(imageUrl).asImage().resolution
 
                 repository.addArtwork(
@@ -114,7 +115,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     image = Image(
                         width = width,
                         height = height,
-                        url = "${Environment.baseServerUrl}$imageUrl"
+                        url = uploadedImageFileName
                     ),
                     description = description,
                     artistId = artistId
@@ -135,6 +136,7 @@ fun Route.artworksRoute(repository: ArtworksRepository) {
                     }
 
                     else -> {
+                        val imageUrl = "${Environment.artworksDirectoryUrl}$uploadedImageFileName"
                         File(imageUrl).delete()
 
                         call.respond(

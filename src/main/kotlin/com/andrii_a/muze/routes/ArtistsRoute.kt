@@ -62,7 +62,7 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
         post("add") {
             val multipart = call.receiveMultipart()
 
-            var portraitImageUrl = ""
+            var uploadedImageFileName = ""
             var name = ""
             var bornDateString = ""
             var diedDateString = ""
@@ -81,13 +81,14 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                         }
 
                         is PartData.FileItem -> {
-                            portraitImageUrl = partData.trySave(Environment.artistsPortraitsDirectoryUrl)
+                            uploadedImageFileName = partData.trySave(Environment.artistsPortraitsDirectoryUrl)
                         }
 
                         else -> Unit
                     }
                 }
 
+                val portraitImageUrl = "${Environment.artistsPortraitsDirectoryUrl}$uploadedImageFileName"
                 val (width, height) = File(portraitImageUrl).asImage().resolution
 
                 repository.addArtist(
@@ -97,7 +98,7 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                     portraitImage = Image(
                         width = width,
                         height = height,
-                        url = "${Environment.baseServerUrl}$portraitImageUrl"
+                        url = uploadedImageFileName
                     ),
                     bio = bio
                 )
@@ -117,6 +118,7 @@ fun Route.artistsRoute(repository: ArtistsRepository) {
                     }
 
                     else -> {
+                        val portraitImageUrl = "${Environment.artistsPortraitsDirectoryUrl}$uploadedImageFileName"
                         File(portraitImageUrl).delete()
 
                         call.respond(

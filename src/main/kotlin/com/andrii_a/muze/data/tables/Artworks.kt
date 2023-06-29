@@ -7,7 +7,7 @@ object Artworks : IntIdTable() {
     val year = varchar("year", 16).nullable()
     val location = text("location")
     val description = text("description")
-    val imageUrl = text("image_url")
+    val image = text("image")
     val imageWidth = integer("image_width")
     val imageHeight = integer("image_height")
     val artistId = reference("artist_id", Artists)

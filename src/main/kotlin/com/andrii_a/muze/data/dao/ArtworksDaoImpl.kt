@@ -7,6 +7,8 @@ import com.andrii_a.muze.domain.dao.ArtworksDao
 import com.andrii_a.muze.domain.model.Artist
 import com.andrii_a.muze.domain.model.Artwork
 import com.andrii_a.muze.domain.model.Image
+import com.andrii_a.muze.util.ImageType
+import com.andrii_a.muze.util.constructUrlForImage
 import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -21,7 +23,10 @@ class ArtworksDaoImpl : ArtworksDao {
         image = Image(
             width = row[Artworks.imageWidth],
             height = row[Artworks.imageHeight],
-            url = row[Artworks.imageUrl]
+            url = constructUrlForImage(
+                filename = row[Artworks.image],
+                imageType = ImageType.ARTWORK
+            )
         ),
         description = row[Artworks.description],
         artist = Artist(
@@ -32,7 +37,10 @@ class ArtworksDaoImpl : ArtworksDao {
             portraitImage = Image(
                 width = row[Artists.portraitImageWidth],
                 height = row[Artists.portraitImageHeight],
-                url = row[Artists.portraitImageUrl]
+                url = constructUrlForImage(
+                    filename = row[Artists.portraitImage],
+                    imageType = ImageType.ARTIST_PORTRAIT
+                )
             ),
             bio = row[Artists.bio]
         )
@@ -98,7 +106,7 @@ class ArtworksDaoImpl : ArtworksDao {
             it[Artworks.location] = location
             it[imageWidth] = image.width
             it[imageHeight] = image.height
-            it[imageUrl] = image.url
+            it[this.image] = image.url
             it[Artworks.description] = description
             it[Artworks.artistId] = artistId
         }.insertedCount > 0
@@ -119,7 +127,7 @@ class ArtworksDaoImpl : ArtworksDao {
             it[this.location] = location
             it[imageWidth] = image.width
             it[imageHeight] = image.height
-            it[imageUrl] = image.url
+            it[this.image] = image.url
             it[this.description] = description
             it[this.artistId] = artistId
         } > 0
