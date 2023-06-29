@@ -1,6 +1,7 @@
 package com.andrii_a.muze.util
 
 import io.ktor.http.content.*
+import io.ktor.server.http.content.*
 import java.awt.image.BufferedImage
 import java.io.File
 import java.util.*
