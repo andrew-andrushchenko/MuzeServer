@@ -6,7 +6,7 @@ In order to run the server you need to declare these environment variables:
 | Variable  | Description | Note |
 | ------------- | ------------- | ------------- |
 | BASE_URL | Your server's network URL. | -
-| DATABASE_URL | URL to your database. | - |
+| DATABASE_URL | Your database URL. | - |
 | JDBC_DRIVER | Your JDBC driver. | - |
 | ARTWORKS_DIR | Path to a directory to store and retrieve artworks. | Optional; Default path: [workingDir]/data/artworks_dir/ |
 | ARTISTS_PORTRAITS_DIR | Path to a directory to store and retrieve artists portraits. | Optional; Default path: [workingDir]/data/artists_portraits/ |
