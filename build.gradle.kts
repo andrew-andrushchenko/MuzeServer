@@ -1,19 +1,12 @@
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val exposed_version: String by project
-val postgresql_version: String by project
-val hikari_version: String by project
-val koin_version: String by project
-
 plugins {
-    kotlin("jvm") version "1.8.22"
-    id("io.ktor.plugin") version "2.3.1"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.22"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.andrii_a.muze"
 version = "0.0.1"
+
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 
@@ -21,29 +14,38 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+kotlin {
+    jvmToolchain(18)
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation(libs.logback.classic)
 
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
-    implementation("org.postgresql:postgresql:$postgresql_version")
-    implementation("com.zaxxer:HikariCP:$hikari_version")
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.java.time)
+    implementation(libs.postgresql)
+    implementation(libs.hikari)
 
-    implementation("io.insert-koin:koin-ktor:$koin_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
-    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-call-logging-jvm:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.logger.slf4j)
+    implementation(libs.ktor.server.core.jvm)
+    implementation(libs.ktor.server.contentnegotiation.jvm)
+    implementation(libs.ktor.server.calllogging.jvm)
+    implementation(libs.ktor.serialization.kotlinx.json.jvm)
+    implementation(libs.ktor.server.host.common.jvm)
+    implementation(libs.ktor.server.netty.jvm)
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.ktor.server.tests.jvm)
+}
+
+tasks.wrapper {
+    gradleVersion = "8.9"
+    distributionType = Wrapper.DistributionType.ALL
 }
