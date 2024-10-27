@@ -18,13 +18,6 @@ In order to run the server you need to declare these environment variables:
 | ARTWORKS_DIR | Path to a directory to store and retrieve artworks. | Optional; Default path: [workingDir]/data/artworks_dir/ |
 | ARTISTS_PORTRAITS_DIR | Path to a directory to store and retrieve artists portraits. | Optional; Default path: [workingDir]/data/artists_portraits/ |
 
-> **Warning** <br/>
-> Code contains extension function for PostgreSQL specific ***ILIKE*** operator for case-insensitive search.<br/>
-> This likely won't be compatible with other databases but it is planned to be fixed in future versions!
-
-> **Note**  
-> Currently was tested in pair with PostgreSQL Database and drivers.
-
 # Routes
 ## Get artworks
 ```

@@ -9,9 +9,9 @@ import com.andrii_a.muze.domain.model.Artwork
 import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.util.ImageType
 import com.andrii_a.muze.util.constructUrlForImage
-import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 
 class ArtworksDaoImpl : ArtworksDao {
 
@@ -54,14 +54,14 @@ class ArtworksDaoImpl : ArtworksDao {
         Artworks
             .leftJoin(Artists)
             .selectAll()
-            .limit(perPage, offset = offset.toLong())
+            .limit(perPage).offset(start = offset.toLong())
             .map(::resultRowToPaintingResponse)
     }
 
     override suspend fun getArtwork(id: Int): Artwork? = dbQuery {
         Artworks
             .leftJoin(Artists)
-            .select(Artworks.id eq id)
+            .selectAll().where(Artworks.id eq id)
             .map(::resultRowToPaintingResponse)
             .firstOrNull()
     }
@@ -74,8 +74,8 @@ class ArtworksDaoImpl : ArtworksDao {
         val offset = (page - 1) * perPage
         Artworks
             .leftJoin(Artists)
-            .select(Artworks.artistId eq artistId)
-            .limit(perPage, offset = offset.toLong())
+            .selectAll().where(Artworks.artistId eq artistId)
+            .limit(perPage).offset(start = offset.toLong())
             .map(::resultRowToPaintingResponse)
     }
 
@@ -87,8 +87,8 @@ class ArtworksDaoImpl : ArtworksDao {
         val offset = (page - 1) * perPage
         Artworks
             .leftJoin(Artists)
-            .select(Artworks.name ilike "%$query%")
-            .limit(perPage, offset = offset.toLong())
+            .selectAll().where(Artworks.name.lowerCase() like "%${query.lowercase()}%")
+            .limit(perPage).offset(start = offset.toLong())
             .map(::resultRowToPaintingResponse)
     }
 

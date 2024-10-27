@@ -1,6 +1,6 @@
 package com.andrii_a.muze.plugins
 
-import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.calllogging.*
 import org.slf4j.event.*
 import io.ktor.server.request.*
 import io.ktor.server.application.*

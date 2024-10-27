@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.ktor.server.netty.jvm)
 
     testImplementation(libs.kotlin.test.junit)
-    testImplementation(libs.ktor.server.tests.jvm)
+    testImplementation(libs.ktor.server.test.host)
 }
 
 tasks.wrapper {

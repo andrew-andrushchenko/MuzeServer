@@ -7,9 +7,9 @@ import com.andrii_a.muze.domain.model.Artist
 import com.andrii_a.muze.domain.model.Image
 import com.andrii_a.muze.util.ImageType
 import com.andrii_a.muze.util.constructUrlForImage
-import com.andrii_a.muze.util.ilike
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import java.time.LocalDate
 
 class ArtistsDaoImpl : ArtistsDao {
@@ -37,13 +37,13 @@ class ArtistsDaoImpl : ArtistsDao {
         val offset = (page - 1) * perPage
         Artists
             .selectAll()
-            .limit(perPage, offset = offset.toLong())
+            .limit(perPage).offset(start = offset.toLong())
             .map(::resultRowToArtist)
     }
 
     override suspend fun getArtist(id: Int): Artist? = dbQuery {
         Artists
-            .select(Artists.id eq id)
+            .selectAll().where(Artists.id eq id)
             .map(::resultRowToArtist)
             .firstOrNull()
     }
@@ -55,8 +55,8 @@ class ArtistsDaoImpl : ArtistsDao {
     ): List<Artist> = dbQuery {
         val offset = (page - 1) * perPage
         Artists
-            .select(Artists.name ilike "%$query%")
-            .limit(perPage, offset = offset.toLong())
+            .selectAll().where(Artists.name.lowerCase() like "%${query.lowercase()}%")
+            .limit(perPage).offset(start = offset.toLong())
             .map(::resultRowToArtist)
     }
 
